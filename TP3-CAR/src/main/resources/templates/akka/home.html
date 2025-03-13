@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Akka Word Count</title>
+</head>
+<body>
+    <h1>Akka Word Count Service</h1>
+
+    <h2>Initialize Service</h2>
+    <form action="/akka/init" method="get">
+        <button type="submit">Initialize</button>
+    </form>
+
+    <h2>Analyze File</h2>
+    <form action="/akka/analyze" method="post" enctype="multipart/form-data">
+        <label for="file">Select file to analyze:</label>
+        <input type="file" id="file" name="file">
+        <button type="submit">Analyze</button>
+    </form>
+
+    <h2>Search Word Count</h2>
+    <form action="/akka/search" method="post">
+        <label for="word">Enter word to search:</label>
+        <input type="text" id="word" name="word">
+        <button type="submit">Search</button>
+    </form>
+
+    <h3 th:if="${word != null}">Search Result</h3>
+    <p th:if="${word != null}">Word: <span id="word-result" th:text="${word}"></span></p>
+    <p th:if="${word != null}">Count: <span id="count-result" th:text="${count}"></span></p>
+</body>
+</html>
