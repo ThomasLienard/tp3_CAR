@@ -1,14 +1,14 @@
 package com.example.TP3_CAR.controllers;
 
-import java.io.File;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -23,10 +23,11 @@ public class AkkaController {
     @Autowired
     private AkkaService service;
 
-    @GetMapping("../")
-    public String index() {
+    @GetMapping("")
+    public String homeBis() {
         return "/akka/home";
     }
+    
 
     @GetMapping("/home")
     public String home() {
@@ -34,23 +35,23 @@ public class AkkaController {
     }
     
     @GetMapping("/init")
-    public String init() {
+    public RedirectView init() {
         service.init();
-        return "/akka/home";
+        return new RedirectView("/akka/home");
     }
 
     @PostMapping("/analyze")
-    public RedirectView analyze(@RequestBody File entity) {
-        service.analyze(entity);
+    public RedirectView analyze(@RequestParam("file") MultipartFile file) {
+        service.analyze(file);
         return new RedirectView("/akka/home");
     }
     
     @PostMapping("/search")
-    public ModelAndView search(@RequestBody String word) {
-        service.search(word);
+    public ModelAndView search(@RequestParam String word) {
+        var count = service.search(word);
         var model = Map.of(
             "word", word,
-            "count", 0
+            "count", count
         );
         return new ModelAndView("/akka/home", model);
     }
